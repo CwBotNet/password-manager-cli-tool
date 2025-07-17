@@ -1,0 +1,12 @@
+[package]
+name = "password_manager_cli"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+aes-gcm = "0.10.3"
+chrono = "0.4.41"
+clipboard = "0.5.0"
+prettytable = "0.10.0"
+rand = "0.9.1"
+
