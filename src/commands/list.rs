@@ -21,7 +21,7 @@ pub fn list_credentials(credentials: &Vec<Credential>) {
             i + 1,
             cred.service.trim(),
             cred.username.trim(),
-            cred.created_at.trim(),
+            cred.created_at.format("%a %b %e %T %Y %Z").to_string(),
             notes.trim()
             ]);
     }
