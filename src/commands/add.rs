@@ -28,8 +28,6 @@ pub fn add_credentail() -> Credential {
             panic!("Failed to encrypt password");
         }
     };
-    
-    println!("{:?} {:?}", cypertext, nonce);
 
     let stored_ciphertext = cypertext;
     let stored_nonce = nonce;

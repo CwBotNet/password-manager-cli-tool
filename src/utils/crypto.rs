@@ -34,9 +34,14 @@ pub fn decrypt_password(
 
     let nonce = Nonce::from_slice(nonce_bytes);
 
-    let plaintext_with_ad = cipher.decrypt(nonce, ciphertext)?;
+    let plaintext = cipher.decrypt(nonce,Payload{
+        msg:ciphertext,
+        aad:associated_data
+    })?;
 
-    let plaintext = plaintext_with_ad[..plaintext_with_ad.len() - associated_data.len()].to_vec();
-
+    println!(
+        "{:?} {:?} {:?} {:?}",
+        ciphertext, key, nonce_bytes, associated_data
+    );
     Ok(plaintext)
 }

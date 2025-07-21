@@ -6,7 +6,7 @@ pub fn get_non_empty_input(prompt: &str) -> String {
         println!("{}", prompt);
         io::stdout().flush().expect("failed to flush the stdout");
 
-        let _ = io::stdin()
+        io::stdin()
             .read_line(&mut input)
             .map_err(|e| format!("‼️ Failed to read the input: {}", e));
 
