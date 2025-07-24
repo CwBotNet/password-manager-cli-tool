@@ -2,6 +2,7 @@ mod commands;
 mod models;
 mod utils;
 mod helper;
+mod storage;
 
 
 use commands::*;
