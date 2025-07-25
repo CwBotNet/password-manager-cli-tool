@@ -51,11 +51,11 @@ impl Zeroize for MasterKey {
     }
 }
 
-pub struct Encryption;
+pub struct Encryptor;
 
-impl Encryption {
+impl Encryptor {
     /// Encrypt given plantext using AES-256-GCM
-    pub fn encrypt_password(
+    pub fn encrypt(
         master_key: &MasterKey,
         associated_data: &[u8],
     ) -> anyhow::Result<Vec<u8>> {
@@ -76,7 +76,7 @@ impl Encryption {
         Ok(result)
     }
     /// Decrypt given data using AES-256-GCM
-    pub fn decrypt_password(encrypted: &[u8], master_key: &MasterKey) -> anyhow::Result<Vec<u8>> {
+    pub fn decrypt(encrypted: &[u8], master_key: &MasterKey) -> anyhow::Result<Vec<u8>> {
         if encrypted.len() < NONCE_LENGTH {
             return Err(anyhow::anyhow!("Encrypted data too short"));
         }
