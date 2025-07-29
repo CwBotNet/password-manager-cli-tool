@@ -1,5 +1,5 @@
 use crate::models::credential::Credential;
-use crate::utils::{Table,row};
+use crate::utils::{Table, row};
 
 pub fn list_credentials(credentials: &Vec<Credential>) {
     if credentials.is_empty() {
@@ -8,7 +8,7 @@ pub fn list_credentials(credentials: &Vec<Credential>) {
     }
 
     println!("\n 🔐 Saved credentials:");
-    
+
     let mut table = Table::new();
     table.add_row(row!["ID", "Service", "Username", "Created At", "Notes"]);
 
@@ -23,8 +23,12 @@ pub fn list_credentials(credentials: &Vec<Credential>) {
             cred.username.trim(),
             cred.created_at.format("%a %b %e %T %Y %Z").to_string(),
             notes.trim()
-            ]);
+        ]);
     }
     table.printstd();
-    println!();  // for extra line
+    println!(); // for extra line
+}
+
+pub fn run(show_password:bool) -> anyhow::Result<()> {
+    Ok(())
 }

@@ -118,31 +118,31 @@ impl CredentialVault {
     }
 
     pub fn find_credential(&self, id: &Uuid) -> Option<&Credential> {
-        self.credentials.iter().find(|c|c.id == *id)
+        self.credentials.iter().find(|c| c.id == *id)
     }
     pub fn find_credential_mut(&mut self, id: &Uuid) -> Option<&mut Credential> {
-        self.credentials.iter_mut().find(|c|c.id == *id)
+        self.credentials.iter_mut().find(|c| c.id == *id)
     }
-    pub fn search_credentials(&self, serch_term:&str)->Vec<&Credential>{
+    pub fn search_credentials(&self, serch_term: &str) -> Vec<&Credential> {
         self.credentials
             .iter()
-            .filter(|c|c.matches_search(serch_term))
+            .filter(|c| c.matches_search(serch_term))
             .collect()
     }
 }
 
 // Implement zeroize to securely clear sensitive data
-impl Zeroize for Credential{
+impl Zeroize for Credential {
     fn zeroize(&mut self) {
         self.password.zeroize();
-        if let Some(ref mut notes)= self.notes{
+        if let Some(ref mut notes) = self.notes {
             notes.zeroize();
         }
     }
 }
 
-impl Drop for Credential{
-    fn drop(&mut self){
+impl Drop for Credential {
+    fn drop(&mut self) {
         self.zeroize();
     }
 }

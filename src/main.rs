@@ -17,7 +17,7 @@ mod utils;
 #[derive(Parser)]
 #[command(name = "pwdmgr")]
 #[command(about = "A secure password manager CLI tool")]
-#[commad(version = "1.0.0")]
+#[command(version = "1.0.0")]
 #[command(author = "Raj sahani \n Gmail: rajsahaniofficial19@gmail.com")]
 pub struct Cli {
     #[command(subcommand)]
@@ -54,7 +54,7 @@ pub enum Commands {
     /// List all credentials
     List {
         /// Show Passwords (hidden by default)
-        shoe_password: bool,
+        show_password: bool,
     },
 
     /// Get a Specific Credential
@@ -91,10 +91,10 @@ pub enum Commands {
 }
 
 fn main() -> Result<()> {
-    let cli = Cli::parser();
+    let cli = Cli::parse();
 
     match cli.command {
-        Commands::Init => Commands::Init::run(),
+        Commands::Init => commands::init::run(),
         Commands::Add {
             title,
             username,
@@ -102,7 +102,7 @@ fn main() -> Result<()> {
             notes,
             generate,
         } => commands::add::run(title, username, url, notes, generate),
-        Commands::List { shoe_password } => commands::list::run(shoe_password),
+        Commands::List { show_password } => commands::list::run(show_password),
         Commands::Get { query, copy } => commands::get::run(query, copy),
         Commands::Delete { query, force } => commands::delete::run(query, force),
         Commands::Search { term } => commands::search::run(term),

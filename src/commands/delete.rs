@@ -1,1 +1,3 @@
-pub fn delete_credential(){}
+pub fn run(query: String, force:bool) -> anyhow::Result<()> {
+    Ok(())
+}

@@ -55,10 +55,7 @@ pub struct Encryptor;
 
 impl Encryptor {
     /// Encrypt given plantext using AES-256-GCM
-    pub fn encrypt(
-        master_key: &MasterKey,
-        associated_data: &[u8],
-    ) -> anyhow::Result<Vec<u8>> {
+    pub fn encrypt(master_key: &MasterKey, associated_data: &[u8]) -> anyhow::Result<Vec<u8>> {
         let key = Key::<Aes256Gcm>::from_slice(master_key.as_bytes());
         let cipher = Aes256Gcm::new(key);
 
