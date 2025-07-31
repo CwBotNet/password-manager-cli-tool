@@ -1,5 +1,5 @@
 use anyhow::Result;
-use rand::{distr::{Alphanumeric, SampleString},thread_rng,RngCore};
+use rand::{RngCore,thread_rng};
 /// Genrate a strong. random Password.
 ///
 /// # Arguments
@@ -14,9 +14,13 @@ pub fn genrate_password(length: usize, include_symbols: bool) -> Result<String> 
 
     let mut charset =
         String::from("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
-    let sumbols = "!@#$%^&*()_-+=[]{}|;:,.<>?/";
+    let symbols = "!@#$%^&*()_-+=[]{}|;:,.<>?/";
 
-    let mut rng =thread_rng();
+    if include_symbols {
+        charset.push_str(symbols);
+    }
+
+    let mut rng = thread_rng();
     let password: String = (0..length)
         .map(|_| {
             let idx = rng.next_u32() as usize % charset.len();
@@ -24,5 +28,22 @@ pub fn genrate_password(length: usize, include_symbols: bool) -> Result<String> 
         })
         .collect();
 
-        Ok(password)
+    Ok(password)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_generate_password_length() {
+        let pass = genrate_password(20, true).unwrap();
+        assert_eq!(pass.len(), 20);
+    }
+
+    #[test]
+    fn test_generate_password_no_symbols() {
+        let pass = genrate_password(32, false).unwrap();
+        assert!(pass.chars().all(|c| c.is_alphanumeric()))
+    }
 }

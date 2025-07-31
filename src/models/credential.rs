@@ -7,7 +7,7 @@ use zeroize::Zeroize;
 pub struct Credential {
     pub id: Uuid,
     pub service: String,
-    pub username: String,
+    pub username: Option<String>,
     pub password: String,
     pub url: Option<String>,
     pub notes: Option<String>,
@@ -25,13 +25,13 @@ pub struct CredentialVault {
 }
 
 impl Credential {
-    pub fn new(service: String, username: String, password: String) -> Self {
+    pub fn new(service: String, username: Option<String>, password: String) -> Self {
         let now = Utc::now();
 
         Self {
             id: Uuid::new_v4(),
             service,
-            username,
+            username: None,
             password,
             url: None,
             notes: None,
@@ -67,7 +67,7 @@ impl Credential {
             "ID {}\nService: {}\nUsername: {}\nURL: {}Created At: {}\nTags: {}",
             self.id,
             self.service,
-            self.username,
+            self.username.as_deref().unwrap_or("N/A"),
             self.url.as_deref().unwrap_or("N/A"),
             self.created_at.format("%Y-%m-%d %H:%M"),
             self.tags.join(",")
@@ -77,9 +77,11 @@ impl Credential {
     // check if Credential matches search terms
     pub fn matches_search(&self, search_term: &str) -> bool {
         let search_lower = search_term.to_lowercase();
-
         self.service.to_lowercase().contains(&search_lower)
-            || self.username.to_lowercase().contains(&search_lower)
+            || self
+                .username
+                .as_ref()
+                .map_or(false, |u| u.to_lowercase().contains(&search_lower))
             || self
                 .url
                 .as_ref()

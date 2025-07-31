@@ -4,3 +4,4 @@ pub use std::io::Write;
 pub use std::{io, process};
 
 pub mod crypto;
+pub mod generator;
