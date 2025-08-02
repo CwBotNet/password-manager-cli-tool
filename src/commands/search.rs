@@ -15,7 +15,7 @@ pub fn run(term: String) -> anyhow::Result<()> {
     let vault = storage.load_vault(&master_password)?;
 
     // Search credentials using matches_search method
-    let results: Vec<_> = vault.search_credential(&term);
+    let results: Vec<_> = vault.search_credentials(&term);
 
     if results.is_empty() {
         println!("🔍 No credentials found matching '{}'.", term);

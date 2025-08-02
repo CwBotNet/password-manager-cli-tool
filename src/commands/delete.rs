@@ -1,13 +1,10 @@
 use anyhow::Result;
 use dialoguer::Confirm;
-use uuid::Uuuid;
+use uuid::Uuid;
 
-use crate::{
-    commands::{ensure_vault_exists, get_master_password, get_storage},
-    models::credential,
-};
+use crate::commands::{ensure_vault_exists, get_master_password, get_storage};
 
-pub fn run(query: String, force: bool) -> anyhow::Result<()> {
+pub fn run(query: String, force: bool) -> Result<()> {
     let storage = get_storage()?;
     ensure_vault_exists(&storage)?;
 
@@ -18,11 +15,11 @@ pub fn run(query: String, force: bool) -> anyhow::Result<()> {
     let mut vault = storage.load_vault(&master_password)?;
 
     // Try parsing query as UUID
-    let credential_option = if let Ok(uuid) = Uuuid::parse_str(&query) {
+    let credential_option = if let Ok(uuid) = Uuid::parse_str(&query) {
         vault.find_credential(&uuid).cloned()
     } else {
         vault
-            .credetials
+            .credentials
             .iter()
             .find(|cred| {
                 cred.service.to_lowercase().contains(&query.to_lowercase())
@@ -53,7 +50,7 @@ pub fn run(query: String, force: bool) -> anyhow::Result<()> {
         }
 
         // Remove credential by ID
-        if vault.remove_credential(&credential.id).is_some {
+        if vault.remove_credential(&credential.id).is_some() {
             storage.save_vault(&vault, &master_password)?;
             println!("✅ credential deleted successfully.");
         } else {

@@ -25,17 +25,20 @@ A modern, secure, and extensible command-line password manager written in Rust. 
 ### 1. **Install Dependencies**
 
 You need Rust (edition >=2021):
-
 ```
+
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
 ```
 
 Then clone and build:
 
 ```
-git clone https://github.com/YOUR_GITHUB/password_manager_cli.git
+
+git clone https://github.com/CwBotNet/password-manager-cli-tool
 cd password_manager_cli
 cargo build --release
+
 ```
 
 ### 2. **Usage Examples**
@@ -43,49 +46,65 @@ cargo build --release
 #### Initialize a New Vault
 
 ```
+
 ./target/release/pwdmgr init
+
 ```
 
 #### Add a Credential
 
 ```
+
 ./target/release/pwdmgr add "Gmail Account"
+
 ```
 
 #### List All Credentials
 
 ```
+
 ./target/release/pwdmgr list
+
 ```
 
 #### Search by Term
 
 ```
+
 ./target/release/pwdmgr search gmail
+
 ```
 
 #### Get a Credential (copy to clipboard)
 
 ```
+
 ./target/release/pwdmgr get gmail --copy
+
 ```
 
 #### Delete a Credential
 
 ```
-./target/release/pwdmgr delete 
+
+./target/release/pwdmgr delete
+
 ```
 
 #### Change the Master Password
 
 ```
+
 ./target/release/pwdmgr change-password
+
 ```
 
 #### See Vault Stats
 
 ```
+
 ./target/release/pwdmgr status
+
 ```
 
 ---
@@ -114,6 +133,7 @@ src/
 ```
 
 **Adding Features?**
+
 - Model changes in `models/credential.rs`
 - Secure new flows with `utils/crypto.rs`
 - Extend CLI in `src/commands/`
@@ -155,7 +175,7 @@ Created by [Raj sahani](https://github.com/CwBotNet) — built as a professional
 
 **Pull requests and suggestions are welcome!**
 
-```
+````
 
 # 📝 In-Code Documentation
 
@@ -168,7 +188,7 @@ Created by [Raj sahani](https://github.com/CwBotNet) — built as a professional
      ```
 
 2. **Module (file-level) doc comments:**
-   - At the top of each main file:  
+   - At the top of each main file:
      ```rust
      //! This module defines the Credential struct and vault management logic.
      ```
@@ -182,3 +202,4 @@ Created by [Raj sahani](https://github.com/CwBotNet) — built as a professional
 - Link to your README from your project repo for portfolio visibility.
 - Add screenshots or terminal asciinema/GIFs to showcase usage (optional but very impressive!).
 - Consider a LICENSE file (MIT/Apache-2.0 dual license is standard for open source).
+````
