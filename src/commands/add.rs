@@ -1,13 +1,9 @@
 use dialoguer::{Confirm, Input};
 
 use crate::commands::{ensure_vault_exists, get_master_password, get_storage};
-use crate::helper::non_empty_input::get_non_empty_input;
 use crate::models::credential::Credential;
-use crate::storage;
 use crate::utils::generator::genrate_password;
 // use crate::utils::crypto::{decrypt_password, encrypt_password};
-use crate::utils::{Utc, io};
-
 
 pub fn run(
     title: String,
@@ -28,7 +24,7 @@ pub fn run(
     let mut vault = storage.load_vault(&master_password)?;
 
     // Collect credentails information
-    let username: Option<String> = match username {
+    let _username: Option<String> = match username {
         Some(u) => Some(u),
         None => {
             let input: String = Input::new()
@@ -81,7 +77,7 @@ pub fn run(
     };
 
     // Create credental
-    let mut credential = Credential::new(title, username, password);
+    let mut credential = Credential::new(title, password);
 
     if let Some(u) = url {
         credential = credential.with_url(u);

@@ -8,7 +8,7 @@ use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier, password_ha
 use zeroize::Zeroize;
 
 /// Constants
-const SALT_LENGTH: usize = 32;
+const SALT_LENGTH: usize = 16;
 const NONCE_LENGTH: usize = 12;
 
 /// Secured wrapper over the derived encryption key
@@ -102,7 +102,7 @@ impl Passwordhasher {
             .hash_password(password.as_bytes(), &salt)
             .map_err(|e| anyhow::anyhow!("Hashing failed:  {}", e))?
             .to_string();
-
+        println!("salt string: {}, hash: {}", salt.to_string(), hash);
         Ok((hash, salt.to_string()))
     }
 

@@ -1,15 +1,7 @@
-use std::process::Command;
-
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 
-use commands::*;
-use models::credential::Credential;
-use utils::{Write, io, process};
-
-use storage::file::FileStorage;
 mod commands;
-mod helper;
 mod models;
 mod storage;
 mod utils;
@@ -35,7 +27,7 @@ pub enum Commands {
         title: String,
 
         /// Username (Optional)
-        #[arg(short, long)]
+        #[arg(long)]
         username: Option<String>,
 
         /// URL (optional)
@@ -54,6 +46,7 @@ pub enum Commands {
     /// List all credentials
     List {
         /// Show Passwords (hidden by default)
+        #[arg(short, long)]
         show_password: bool,
     },
 

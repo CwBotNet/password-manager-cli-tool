@@ -1,7 +1,4 @@
-use crate::{
-    commands::{ensure_vault_exists, get_master_password, get_storage},
-    storage,
-};
+use crate::commands::{ensure_vault_exists, get_master_password, get_storage};
 use anyhow::Result;
 
 pub fn run() -> Result<()> {

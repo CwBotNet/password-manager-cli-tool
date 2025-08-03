@@ -28,6 +28,7 @@ pub fn run() -> anyhow::Result<()> {
     }
 
     // Initialize vault 
+    storage.initialize_vault(&master_password)?;
     println!("🎉 Vault initialized successfully!");
     println!("📍 Location: {}", storage.get_vault_path().display());
     println!("\n💡 Next steps:");

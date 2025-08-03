@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::{Path, PathBuf};
 
-use base64;
+use base64::{Engine as _, engine::general_purpose};
 use dirs;
 
 const VAULT_FILE_EXTENSION: &str = "vault";
@@ -76,7 +76,14 @@ impl FileStorage {
         let vault_json = serde_json::to_string(&empty_vault)?;
 
         // Encrypt vault data
-        let salt_byte = base64::decode(&salt_string)
+        let salt_byte = general_purpose::STANDARD
+            .decode({
+                let mut padded = salt_string.clone();
+                while padded.len() % 4 != 0 {
+                    padded.push('=');
+                }
+                padded
+            })
             .map_err(|e| anyhow::anyhow!("salt decode Error: {}", e))?;
 
         let master_key = MasterKey::derive_from_password(master_password, &salt_byte)?;
@@ -110,7 +117,14 @@ impl FileStorage {
         }
 
         // decrypt vault data
-        let salt_bytes = base64::decode(&vault_file.salt)
+        let salt_bytes = general_purpose::STANDARD
+            .decode({
+                let mut padded = vault_file.salt.clone();
+                while padded.len() % 4 != 0 {
+                    padded.push('=');
+                }
+                padded
+            })
             .map_err(|e| anyhow::anyhow!("Salt decode error: {}", e))?;
         let master_key = MasterKey::derive_from_password(master_password, &salt_bytes)?;
         let decrypted_data = Encryptor::decrypt(&vault_file.encrypted_data, &master_key)?;
@@ -133,7 +147,14 @@ impl FileStorage {
         }
 
         // Encrypt updated vault
-        let salt_bytes = base64::decode(&vault_file.salt)
+        let salt_bytes = general_purpose::STANDARD
+            .decode({
+                let mut padded = vault_file.salt.clone();
+                while padded.len() % 4 != 0 {
+                    padded.push('=');
+                }
+                padded
+            })
             .map_err(|e| anyhow::anyhow!("Salt decode Error: {}", e))?;
         let master_key = MasterKey::derive_from_password(master_password, &salt_bytes)?;
         let vault_json = serde_json::to_string(vault)?;
@@ -163,7 +184,14 @@ impl FileStorage {
         let (new_password_hash, new_salt_string) = Passwordhasher::hash_password(new_password)?;
 
         // Re-encrypt with new password
-        let new_salt_bytes = base64::decode(&new_salt_string)
+        let new_salt_bytes = general_purpose::STANDARD
+            .decode({
+                let mut padded = new_salt_string.clone();
+                while padded.len() % 4 != 0 {
+                    padded.push('=');
+                }
+                padded
+            })
             .map_err(|e| anyhow::anyhow!("Salt decode error: {}", e))?;
         let new_master_key = MasterKey::derive_from_password(new_password, &new_salt_bytes)?;
         let vault_json = serde_json::to_string(&vault)?;

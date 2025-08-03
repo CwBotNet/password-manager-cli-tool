@@ -43,7 +43,7 @@ pub fn run(query: String, force: bool) -> Result<()> {
                 .with_prompt("Do you really want to delete it?")
                 .default(false)
                 .interact()?;
-            if confirm {
+            if !confirm {
                 println!("❌ Deletion cancelled.");
                 return Ok(());
             }

@@ -1,5 +1,5 @@
 use anyhow::Result;
-use rand::{RngCore,thread_rng};
+use rand::{RngCore,rng};
 /// Genrate a strong. random Password.
 ///
 /// # Arguments
@@ -20,7 +20,7 @@ pub fn genrate_password(length: usize, include_symbols: bool) -> Result<String> 
         charset.push_str(symbols);
     }
 
-    let mut rng = thread_rng();
+    let mut rng = rng();
     let password: String = (0..length)
         .map(|_| {
             let idx = rng.next_u32() as usize % charset.len();

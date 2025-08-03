@@ -25,7 +25,7 @@ pub struct CredentialVault {
 }
 
 impl Credential {
-    pub fn new(service: String, username: Option<String>, password: String) -> Self {
+    pub fn new(service: String, password: String) -> Self {
         let now = Utc::now();
 
         Self {
@@ -45,17 +45,19 @@ impl Credential {
         self.url = Some(url);
         self
     }
-
-    pub fn with_notes(mut self, notes: String) -> Self {
-        self.notes == Some(notes);
+    #[allow(dead_code)]
+    pub fn with_notes(self, notes: String) -> Self {
+        let _ = self.notes == Some(notes);
         self
     }
 
-    pub fn with_tags(mut self, tags: Vec<String>) -> Self {
-        self.tags == tags;
+    #[allow(dead_code)]
+    pub fn with_tags(self, tags: Vec<String>) -> Self {
+        let _ = self.tags == tags;
         self
     }
 
+    #[allow(dead_code)]
     pub fn update_password(&mut self, new_password: String) {
         self.password = new_password;
         self.updated_at = Utc::now();
@@ -64,7 +66,7 @@ impl Credential {
     // Display credentail safely (hide password)
     pub fn display_safe(&self) -> String {
         format!(
-            "ID {}\nService: {}\nUsername: {}\nURL: {}Created At: {}\nTags: {}",
+            "ID {}\nService: {}\nUsername: {}\nURL: {}\nCreated At: {}\nTags: {}",
             self.id,
             self.service,
             self.username.as_deref().unwrap_or("N/A"),
@@ -122,6 +124,7 @@ impl CredentialVault {
     pub fn find_credential(&self, id: &Uuid) -> Option<&Credential> {
         self.credentials.iter().find(|c| c.id == *id)
     }
+    #[allow(dead_code)]
     pub fn find_credential_mut(&mut self, id: &Uuid) -> Option<&mut Credential> {
         self.credentials.iter_mut().find(|c| c.id == *id)
     }

@@ -21,10 +21,10 @@ pub fn run(show_password: bool) -> Result<()> {
     // Display credentials
     println!("📝 Credentials in vault ({}):\n", vault.credentials.len());
 
-    let term = Term::stdout();
+    let _term = Term::stdout();
     let header_style = Style::new().bold().cyan();
     let id_style = Style::new().dim();
-    let title_style = Style::new().bold();
+    let _title_style = Style::new().bold();
     let warning_style = Style::new().red();
 
     for (index, credential) in vault.credentials.iter().enumerate() {

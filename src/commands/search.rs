@@ -1,8 +1,4 @@
-use crate::{
-    commands::{ensure_vault_exists, get_master_password, get_storage},
-    models::credential,
-};
-use anyhow::Result;
+use crate::commands::{ensure_vault_exists, get_master_password, get_storage};
 
 pub fn run(term: String) -> anyhow::Result<()> {
     let storage = get_storage()?;

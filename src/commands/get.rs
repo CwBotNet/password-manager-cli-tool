@@ -1,9 +1,4 @@
-use crate::{
-    commands::{ensure_vault_exists, get_master_password, get_storage},
-    models::credential,
-    storage,
-};
-use anyhow::Result;
+use crate::commands::{ensure_vault_exists, get_master_password, get_storage};
 use console::Style;
 use uuid::Uuid;
 
@@ -86,27 +81,46 @@ pub fn run(query: String, copy: bool) -> anyhow::Result<()> {
 
             // Copy to clipboard if requested
             if copy {
-
                 #[cfg(feature = "clipboard")]
                 {
-                    use clipboard::{ClipboardContext, ClipboardProvider};
-                    let mut ctx: ClipboardContext = ClipboardProvider::new()?;
-                    ctx.set_contents(cred.password.clone())?;
-                    println!("\n📝 Password copied to clipboard!");
+                    match copy_to_clipboard(&cred.password) {
+                        Ok(()) => println!("\n📝 Password copied to clipboard!"),
+                        Err(e) => {
+                            println!("⚠️ Faild to copy to clipboard: {}", e);
+                            println!("Password: {}", cred.password);
+                        }
+                    }
                 }
 
                 #[cfg(not(feature = "clipboard"))]
                 {
                     println!("\n❌ Clipboard feature not enabled. Password shown above.");
+                    println!("Password: {}", cred.passowrd);
                 }
+            }else {
+                println!("Password: ........");
+                println!("💡 Use --copy flag to copy to clipboard");
             }
-        },
+        }
         None => {
             println!("❌ No credentails found matching: '{}'", query);
             println!("💡 Use 'pwdmgr list' to see all credentails");
             println!("💡 Use 'pwdmgr search <term>' to search more broadly");
         }
     }
+
+    Ok(())
+}
+
+#[cfg(feature = "clipboard")]
+fn copy_to_clipboard(content: &str) -> anyhow::Result<()> {
+    use clipboard::{ClipboardContext, ClipboardProvider};
+
+    let mut ctx: ClipboardContext = ClipboardProvider::new()
+        .map_err(|e| anyhow::anyhow!("Faild to initialize Clioboard: {}", e))?;
+
+    ctx.set_contents(content.to_string())
+        .map_err(|e| anyhow::anyhow!("Faild to set clipboard contents: {}", e))?;
 
     Ok(())
 }
